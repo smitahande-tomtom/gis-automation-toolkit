@@ -15,7 +15,6 @@ A Python-based desktop GUI tool for converting geospatial data between common GI
 - 📊 **Conversion summary** — Per-layer results with feature counts, drop stats, and status (success / failed / skipped)
 - 💾 **Export report** — Summary table can be exported as a CSV log
 
----
 
 ## Supported Input Formats
 
