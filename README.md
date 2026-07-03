@@ -168,6 +168,63 @@ Run it directly — no Python installation required.
 
 ---
 
+---
+
+## Dumbo Hourly Status Agent
+
+`dumbo_status_agent.py` polls the [Dumbo production dashboard](https://dumbo-prod.maps-contentops.amiefarm.com/dashboard) every hour and logs the run statuses for a given user.
+
+### Install dependencies
+
+```bash
+pip install requests beautifulsoup4 schedule
+```
+
+### Run
+
+```bash
+# Interactive password prompt, checks every 60 minutes (default), logs to dumbo_status.log
+python dumbo_status_agent.py --username hande
+
+# Single check and exit
+python dumbo_status_agent.py --username hande --once
+
+# Custom interval (every 30 minutes) and custom log file
+python dumbo_status_agent.py --username hande --interval 30 --log-file /tmp/dumbo.log
+```
+
+### Options
+
+| Flag | Default | Description |
+|---|---|---|
+| `--username` | `hande` | Dumbo user whose runs to monitor |
+| `--password` | *(prompted)* | Dashboard password |
+| `--interval` | `60` | Polling interval in minutes |
+| `--log-file` | `dumbo_status.log` | Path to the log file |
+| `--once` | off | Run a single check then exit |
+
+### Sample output
+
+```
+──────────────────────────────────────────────────────────────────────
+Hourly Dumbo Status Report  (2026-07-03 09:00:00)
+User     : hande
+Total    : 3 run(s)
+──────────────────────────────────────────────────────────────────────
+  Run ID                          Status           Timestamp
+  ------------------------------  ---------------  --------------------
+  nl-addresses-20260703           ✅ succeeded      2026-07-03 08:45:12
+  de-roads-20260703               🟡 running        2026-07-03 08:50:00
+  fr-poi-20260702                 ❌ failed         2026-07-02 22:10:05
+──────────────────────────────────────────────────────────────────────
+Summary: ❌ failed: 1  |  🟡 running: 1  |  ✅ succeeded: 1
+──────────────────────────────────────────────────────────────────────
+```
+
+> **Note:** If the dashboard markup changes, update the selector constants at the top of `dumbo_status_agent.py` (`RUNS_TABLE_SELECTOR`, `USERNAME_COL_IDX`, `STATUS_COL_IDX`, etc.) to match the new structure.
+
+---
+
 ## License
 
 This project is intended for internal TomTom GIS automation workflows.
